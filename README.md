@@ -21,3 +21,9 @@ docker build -t whitenoise-generator:0.1 .
 ```
 ./start.sh
 ```
+
+## 屏幕截图
+
+效果展示：
+
+![效果展示图](doc/screenshot.png)
