@@ -14,7 +14,7 @@
 docker build -t whitenoise-generator:0.1 .
 ```
 
-其中 image 名称要和 `start.sh` 脚本中变量 `whitenoiseGeneratorImageName` 的值一致。
+其中 image 名称要和 `start.sh` 脚本中变量 `whitenoiseGeneratorImageName` 引用的镜像匹配。
 
 2. 启动 Web server 和 ffmpeg 实例：
 
