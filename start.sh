@@ -18,10 +18,17 @@ fi
 
 tempDir=$(mktemp -d)
 
+nginxConfigOverrideFlags=""
+if [ "$NGINX_CONFIG_OVERRIDE_DIR" ]; then
+  nginxConfigOverrideFlags="-v $NGINX_CONFIG_OVERRIDE_DIR:/etc/nginx/conf.d"
+elif [ -d "nginx/conf.d" ]; then
+  nginxConfigOverrideFlags="-v $(pwd)/nginx/conf.d:/etc/nginx/conf.d"
+fi
+
 docker run -dit --rm --name $webInstanceName \
   -p "$publishPort:80" \
   -v $tempDir:$nginxDefaultWebroot \
-  -v "$nginxConfOverride:/etc/nginx/conf.d" \
+  $nginxConfigOverrideFlags \
   $nginxImageName
 
 if [ $? -ne 0 ]; then
