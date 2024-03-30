@@ -26,4 +26,4 @@ now we are ready to go.
 
 ## Screenshot
 
-![screenshot](https://videos.idx.best/videos/demonstrations-24-03-30.mp4)
+https://videos.idx.best/videos/demonstrations-24-03-30.mp4

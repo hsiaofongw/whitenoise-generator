@@ -26,4 +26,4 @@ docker build -t whitenoise-generator:0.1 .
 
 效果展示：
 
-![screenshot](https://videos.idx.best/videos/demonstrations-24-03-30.mp4)
+https://videos.idx.best/videos/demonstrations-24-03-30.mp4
