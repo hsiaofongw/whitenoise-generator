@@ -33,9 +33,9 @@ if [ "$OUTPUT_ADO_BIT_RATE" ]; then
     outputAudioBitrate="$OUTPUT_ADO_BIT_RATE"
 fi
 
-dd if=/dev/urandom | ffmpeg \
-  -re -f rawvideo -framerate "$outputFrameRateFps" -pixel_format yuv420p -video_size "$outputResolution" -i pipe:0 \
-  -re -f u8 -sample_rate "$outputAudioSampleRateHz" -ch_layout stereo -i pipe:0 \
+ffmpeg \
+  -re -f rawvideo -framerate "$outputFrameRateFps" -pixel_format yuv420p -video_size "$outputResolution" -i /dev/urandom \
+  -re -f u8 -sample_rate "$outputAudioSampleRateHz" -ch_layout stereo -i /dev/urandom \
   -map 0:v \
   -map 1:a \
   -c:v libx264 -c:a aac -b:v "$outputVideoBitrate" -b:a "$outputAudioBitrate" \
