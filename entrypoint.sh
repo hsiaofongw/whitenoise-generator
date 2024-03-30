@@ -15,11 +15,19 @@ if [ "$OUTPUT_ADO_SAMP_RATE" ]; then
     outputAudioSampleRateHz="$OUTPUT_ADO_SAMP_RATE"
 fi
 
-outputM3U8Location="/live/now.m3u8"
-outputM3U8Dir=$(dirname $outputM3U8Location)
-mkdir -p "$outputM3U8Dir"
+outputMixedM3U8Location="/live/av_mixed/now.m3u8"
+outputMixedM3U8Dir=$(dirname $outputMixedM3U8Location)
+mkdir -p "$outputMixedM3U8Dir"
 if [ $? -ne 0 ]; then
-    echo "Failed to create: $outputM3U8Dir"
+    echo "Failed to create: $outputMixedM3U8Dir"
+    exit 1
+fi
+
+outputAudioM3U8Location="/live/audio/now.m3u8"
+outputAudioM3U8Dir=$(dirname $outputAudioM3U8Location)
+mkdir -p "$outputAudioM3U8Dir"
+if [ $? -ne 0 ]; then
+    echo "Failed to create: $outputAudioM3U8Dir"
     exit 1
 fi
 
@@ -36,4 +44,8 @@ ffmpeg \
   -c:v libx264 -preset ultrafast -c:a aac -b:a "$outputAudioBitrate" \
   -f fifo -attempt_recovery 1 -drop_pkts_on_overflow 1 \
   -fifo_format hls -format_opts "hls_time=2:hls_list_size=10:hls_flags=delete_segments" \
-  "$outputM3U8Location"
+  "$outputMixedM3U8Location" \
+  -map 1:a \
+  -c:a aac -b:a "$outputAudioBitrate" \
+  -f hls \
+  "$outputAudioM3U8Location"

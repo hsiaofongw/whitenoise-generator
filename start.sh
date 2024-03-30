@@ -34,30 +34,52 @@ elif [ -d "nginx/conf.d" ]; then
   nginxConfigOverrideFlags="-v $(pwd)/nginx/conf.d:/etc/nginx/conf.d"
 fi
 
-docker run -dit --rm --name $webInstanceName \
+webserverLabel="app=whitenoise-hls-webserver"
+webServerContainerId=$(docker run \
+  -l $webserverLabel \
+  -dit --rm \
+  --name $webInstanceName \
   -p "$publishPort:80" \
   -v $tempDir:$nginxDefaultWebroot \
   $nginxConfigOverrideFlags \
-  $nginxImageName
+  $nginxImageName)
 
 if [ $? -ne 0 ]; then
   echo "Failed to launch the webserver to publish HLS stream data."
   exit 1
 fi
 
-docker run -dit --rm --name $whitenoiseGeneratorInsanceName \
+echo "Launched webserver container: $webServerContainerId"
+
+ffmpegLabel="app=whitenoise-streams-generator"
+ffmpegContainerId=$(docker run \
+  -dit --rm \
+  -l $ffmpegLabel \
+  --name $whitenoiseGeneratorInsanceName \
   -v "$tempDir:$whitenoiseGeneratorOutputPath" \
-  $whitenoiseGeneratorImageName
+  $whitenoiseGeneratorImageName)
 
 if [ $? -ne 0 ]; then
   echo "Failed to launch the whitenoise generator."
   exit 1
 fi
 
-streamingEndpointLocal="http://localhost:$publishPort/now.m3u8"
-streamingEndpointLAN="http://$(hostname):$publishPort/now.m3u8"
+echo "Launched ffmpeg container: $ffmpegContainerId"
 
-echo "HLS endpoint (in localhost): $streamingEndpointLocal"
-echo "HLS endpoint (in LAN, with mDNS hostname): $streamingEndpointLAN"
+echo -ne '\n'
+
+webbase="http://localhost:$publishPort"
+mDNSWebbase="http://$(hostname):$publishPort"
+
+echo "Audible video streams: "
+echo "(in localhost): $webbase/av_mixed/now.m3u8"
+echo "(in LAN, with mDNS): $mDNSWebbase/av_mixed/now.m3u8"
+echo -ne '\n'
+echo "Pure audio streams: "
+echo "(in localhost): $webbase/audio/now.m3u8"
+echo "(in LAN, with mDNS): $mDNSWebbase/audio/now.m3u8"
+echo -ne '\n'
+echo "To browser all available streams, visit: $webbase/"
+echo -ne '\n'
 echo "You might open it using Safari or VLC, and if you don't see anything after open it, try again after a few seconds."
 echo "Notice that if your current docker context is not in localhost, then above address(es) might be incorrect."
