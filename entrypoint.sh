@@ -1,6 +1,6 @@
 #!/bin/sh
 
-outputResolution="100x100"
+outputResolution="84x84"
 if [ "$OUTPUT_RESOLUTION" ]; then
     outputResolution="$OUTPUT_RESOLUTION"
 fi
@@ -23,11 +23,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-outputVideoBitrate="1000k"
-if [ "$OUTPUT_VIDEO_BIT_RATE" ]; then
-    outputVideoBitrate="$OUTPUT_VIDEO_BIT_RATE"
-fi
-
 outputAudioBitrate="320k"
 if [ "$OUTPUT_ADO_BIT_RATE" ]; then
     outputAudioBitrate="$OUTPUT_ADO_BIT_RATE"
@@ -38,7 +33,7 @@ ffmpeg \
   -re -f u8 -sample_rate "$outputAudioSampleRateHz" -ch_layout stereo -i /dev/urandom \
   -map 0:v \
   -map 1:a \
-  -c:v libx264 -c:a aac -b:v "$outputVideoBitrate" -b:a "$outputAudioBitrate" \
+  -c:v libx264 -preset ultrafast -c:a aac -b:a "$outputAudioBitrate" \
   -f fifo -attempt_recovery 1 -drop_pkts_on_overflow 1 \
   -fifo_format hls -format_opts "hls_time=2:hls_list_size=10:hls_flags=delete_segments" \
   "$outputM3U8Location"
