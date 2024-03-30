@@ -49,8 +49,9 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-streamingWebDir="http://localhost:$publishPort"
-hlsEndpoint="$streamingWebDir/now.m3u8"
+streamingEndpointLocal="http://localhost:$publishPort/now.m3u8"
+streamingEndpointLAN="http://$(hostname):$publishPort/now.m3u8"
 
-echo "HLS endpoint: $hlsEndpoint"
+echo "HLS endpoint (in localhost): $streamingEndpointLocal"
+echo "HLS endpoint (in LAN): $streamingEndpointLAN"
 echo "You might open it using Safari or VLC, and if you don't see anything after open it, try again after a few seconds."
