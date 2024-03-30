@@ -5,7 +5,12 @@ webInstanceName="whitenoise-hls-server-$now"
 whitenoiseGeneratorInsanceName="whitenoise-generator-$now"
 
 nginxImageName="nginx:1.25.4"
-whitenoiseGeneratorImageName="whitenoise-generator:0.1"
+whitenoiseGeneratorImageName="docker.io/library/whitenoise-generator:0.1"
+docker inspect "$whitenoiseGeneratorImageName" > /dev/null
+if [ $? -ne 0 ]; then
+  echo "Some docker image is not found."
+  exit 1
+fi
 
 nginxDefaultWebroot="/usr/share/nginx/html"
 nginxConfOverride="$(pwd)/nginx/conf.d"
@@ -53,5 +58,5 @@ streamingEndpointLocal="http://localhost:$publishPort/now.m3u8"
 streamingEndpointLAN="http://$(hostname):$publishPort/now.m3u8"
 
 echo "HLS endpoint (in localhost): $streamingEndpointLocal"
-echo "HLS endpoint (in LAN): $streamingEndpointLAN"
+echo "HLS endpoint (in LAN, with mDNS hostname): $streamingEndpointLAN"
 echo "You might open it using Safari or VLC, and if you don't see anything after open it, try again after a few seconds."
