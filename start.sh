@@ -17,6 +17,10 @@ if [ "$PUBLISH_PORT" ]; then
 fi
 
 tempDir=$(mktemp -d)
+if [ $? -ne 0 ]; then
+  echo "Failed to create temporary directory."
+  exit 1
+fi
 
 nginxConfigOverrideFlags=""
 if [ "$NGINX_CONFIG_OVERRIDE_DIR" ]; then
