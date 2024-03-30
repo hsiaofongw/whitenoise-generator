@@ -1,29 +1,29 @@
-# 白噪声和随机点阵图像生成器
+# White noise and random bitmap video generator
 
-## 简介
+## Description
 
-基于 ffmpeg 的随机点阵图像和白噪声生成器，支持以 HLS 串流格式输出。HLS 串流可在 Safari 浏览器或 VLC 播放器中播放。
+It's a random white noise audio and random bitmap video generator based on ffmpeg, it supports HLS output, which can be play via ubiquitous softwares like Safari browser or VLC.
 
-通过该项目，我们演示了如何用 ffmpeg 生成随机音视频流、如何生产并（使用 nginx）发布 HLS 流等简单任务。
+We demonstrated how to generate random audio/video via ffmpeg, how do produce muxed multimedia data streams and how to publish them via a web server like nginx.
 
-## 使用方式
+## Usage
 
-1. 在初次部署时，构建镜像：
+1. At first deploy, you have to build the image:
 
 ```
 docker build -t whitenoise-generator:0.1 .
 ```
 
-其中 image 名称要和 `start.sh` 脚本中变量 `whitenoiseGeneratorImageName` 引用的镜像匹配。
+where the image name shall be coincide with what the `whitenoiseGeneratorImageName` field in `start.sh` script refers.
 
-2. 启动 Web server 和 ffmpeg 实例：
+2. Launch web server and the ffmpeg container:
 
 ```
 ./start.sh
 ```
 
-## 屏幕截图
+now we are ready to go.
 
-效果展示：
+## Screenshot
 
-![效果展示图](doc/screenshot.png)
+![screenshot](doc/screenshot.png)
