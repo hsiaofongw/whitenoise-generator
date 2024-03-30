@@ -2,7 +2,7 @@
 
 ## Description
 
-It's a random white noise audio and random bitmap video generator based on ffmpeg, it supports HLS output, which can be play via ubiquitous softwares like Safari browser or VLC.
+It's a random white noise audio/video generator based on ffmpeg, it supports HLS output, which can be play via ubiquitous softwares like Safari browser or VLC.
 
 We demonstrated how to generate random audio/video via ffmpeg, how do produce muxed multimedia data streams and how to publish them via a web server like nginx.
 
